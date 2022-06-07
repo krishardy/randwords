@@ -8,11 +8,15 @@ BLOCKSIZE=2 ** 20  # 1MB
 parser = argparse.ArgumentParser(description="Random word generator")
 parser.add_argument("-f", "--file", type=argparse.FileType('r'), help="Dictionary file. (Default: {})".format(WORDS), default=WORDS)
 parser.add_argument("count", type=int, help="Number of words to generate")
+parser.add_argument("-a", "--no-apostrophe", action="store_true", help="Do not include apostrophes")
+parser.add_argument("-l", "--lower", action="store_true", help="make all strings lowercase")
+parser.add_argument("-A", "--ascii-only", action="store_true", help="Include only ASCII characters")
+parser.add_argument("-s", "--sort", action="store_true", help="Alphabetically sort the words")
 args = parser.parse_args()
 
 newline_count = 0
 
-# Count number of lines by reading 1MB at at time
+# Count number of lines by reading one block at a time
 while (True):
     try:
         buffer = args.file.read(BLOCKSIZE)
@@ -22,6 +26,7 @@ while (True):
         break
     newline_count += buffer.count('\n')
 
+# Now start at the beginning of the file and start randomly picking lines
 args.file.seek(0)
 
 words = []
@@ -51,11 +56,22 @@ while len(words) < args.count:
                 break
             if word_idx == choices[choices_idx]:
                 word = buffer[buffer_start:newline_pos]
+                if args.no_apostrophe:
+                    word = word.replace("'", "")
+                if args.ascii_only:
+                    word = word.encode("ascii", "ignore")
+                    word = word.decode()
+                if args.lower:
+                    word = word.lower()
                 words.append(word)
                 choices_idx += 1
                 if choices_idx >= len(choices):
                     break
             buffer_start = newline_pos + 1
             word_idx += 1
+
+# Randomize the word order if necessary
+if args.sort == False:
+    random.shuffle(words)
 
 print(' '.join(words))

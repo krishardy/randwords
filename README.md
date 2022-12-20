@@ -1,6 +1,10 @@
 # randwords
 Random word and string generators written in Python
 
+## Installation
+
+`python -m pip install randwords`
+
 ## Examples:
 
 `python randwords 6` : Get 6 random words from the included `words` file
@@ -12,3 +16,4 @@ Random word and string generators written in Python
 `python randwords -A 6` : Get 6 random words and remove non-ASCII characters
 
 `python randwords -a 6` : Get 6 random words and remove apostrophes
+

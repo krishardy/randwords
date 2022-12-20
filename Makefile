@@ -6,6 +6,10 @@ PYTHON=$(VENV_SCRIPTS)/python
 build:
 	$(PYTHON) -m build
 
+.PHONY: clean
+clean:
+	rm -rf dist
+
 .PHONY: dev-setup
 dev-setup: dev-requirements.txt
 	python -m venv $(VENV)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import argparse
-import random
 import pathlib
 import sys
+import secrets
 
 
 def main():
@@ -28,7 +28,7 @@ def main():
 
     # Randomize the word order if necessary
     if args.sort == False:
-        random.shuffle(words)
+        words = _secure_shuffle(words)
     else:
         words = sorted(words)
 
@@ -53,7 +53,7 @@ def _get_newline_count(fh, blocksize):
 def _build_line_manifest(num_items, newline_count):
     choices = []
     for _ in range(num_items):
-        choices.append(random.randint(0, newline_count))
+        choices.append(secrets.randbelow(newline_count))
     choices = sorted(choices)  # Order so that we don't have to seek
     return choices
 
@@ -115,6 +115,20 @@ def _clean_word(word, no_apostrophe, ascii_only, lower):
     if lower:
         word = word.lower()
     return word
+
+def _secure_shuffle(values):
+    """Cryptographically secure list shuffle.
+    :returns: list of shuffled input
+    """
+    result = []
+    mask = [0 for _ in values]
+    length = len(values)
+    while 0 in mask:
+        i = secrets.randbelow(length)
+        if mask[i] == 0:
+            result.append(values[i])
+            mask[i] = 1
+    return result
 
 if __name__ == "__main__":
     sys.exit(main())

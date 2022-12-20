@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-import random
+import secrets
 import string
 import sys
 
@@ -31,7 +31,7 @@ def main():
 
     source_string = ''.join(source_string)
 
-    print(''.join(random.choice(source_string) for i in range(args.count)))
+    print(''.join(secrets.choice(source_string) for i in range(args.count)))
     return 0
 
 if __name__ == "__main__":

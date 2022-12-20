@@ -21,4 +21,4 @@ test:
 
 .PHONY: upload-pypi
 upload-pypi:
-	$(PYTHON) -m twine upload --verbose --repository testpypi dist/*
+	$(PYTHON) -m twine upload --verbose dist/*

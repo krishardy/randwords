@@ -3,7 +3,10 @@ import argparse
 import pathlib
 import sys
 import secrets
+import math
+import string
 
+from randwords.entropy import calculate_corpus, calculate_chars
 
 def main():
     WORDS_DEFAULT=pathlib.Path(__file__).parent.parent / "words"
@@ -16,6 +19,8 @@ def main():
     parser.add_argument("-l", "--lower", action="store_true", help="make all strings lowercase")
     parser.add_argument("-A", "--ascii-only", action="store_true", help="Include only ASCII characters")
     parser.add_argument("-s", "--sort", action="store_true", help="Alphabetically sort the words")
+    parser.add_argument("-S", "--separator", type=str, default=" ", help="Separator string. Default: '%(default)s'")
+    parser.add_argument("-e", "--entropy", action="store_true", help="Show entropy of generated string")
     args = parser.parse_args()
 
     with open(args.file, "r") as fh:
@@ -32,7 +37,13 @@ def main():
     else:
         words = sorted(words)
 
-    print(' '.join(words))
+    result = args.separator.join(words)
+    print(result)
+    if args.entropy:
+        dict_bits = calculate_corpus(newline_count, args.count)
+        char_bits = calculate_chars(result)
+        print(f'Entropy based on dictionary: {dict_bits:.3f} bits')
+        print(f'Entropy based on characters: {char_bits:.3f} bits')
     return 0
 
 def _get_newline_count(fh, blocksize):
@@ -59,10 +70,10 @@ def _build_line_manifest(num_items, newline_count):
 
 def _select_lines(fh, choices, blocksize, no_apostrophe=False, ascii_only=False, lower=False):
     choices_idx = 0
-    words = []
+    selected = []
     line_num = 0
     prepend = ""
-    while len(words) < len(choices):
+    while len(selected) < len(choices):
         # Read a block
         buf = _read_block(fh, blocksize)
         if buf == "":
@@ -89,13 +100,13 @@ def _select_lines(fh, choices, blocksize, no_apostrophe=False, ascii_only=False,
                 # The line is one that we want. Grab it, clean it as necessary and save it.
                 word = buf[buf_start:newline_pos]
                 word = _clean_word(word, no_apostrophe, ascii_only, lower)
-                words.append(word)
+                selected.append(word)
                 choices_idx += 1
             else:
                 # Go to the next line
                 buf_start = newline_pos + 1
                 line_num += 1
-    return words
+    return selected
 
 def _read_block(fh, blocksize):
     buf = ""

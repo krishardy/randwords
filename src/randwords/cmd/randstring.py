@@ -4,6 +4,8 @@ import secrets
 import string
 import sys
 
+from randwords.entropy import calculate_corpus
+
 def main():
     parser = argparse.ArgumentParser(description="Random string generator")
     parser.add_argument("count", type=int, help="Number of characters to generate")
@@ -15,6 +17,8 @@ def main():
         help="Do not include numbers")
     parser.add_argument("-s", "--special", type=str, default="",
         help="Special characters to include")
+    parser.add_argument("-e", "--entropy", action="store_true",
+        help="Show entropy of generated string")
     args = parser.parse_args()
 
     source_string = set(list(args.special))
@@ -31,7 +35,12 @@ def main():
 
     source_string = ''.join(source_string)
 
-    print(''.join(secrets.choice(source_string) for i in range(args.count)))
+    result = ''.join(secrets.choice(source_string) for _ in range(args.count))
+    print(result)
+    if args.entropy:
+        bits = calculate_corpus(len(source_string), len(result))
+        print(f'Entropy: {bits:.3f} bits')
+
     return 0
 
 if __name__ == "__main__":

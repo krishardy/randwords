@@ -1,5 +1,5 @@
-name: ci
-run-name: Build and test randwords
+name: release
+run-name: Release
 on:
   tags:
     - *

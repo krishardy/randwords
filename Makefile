@@ -29,3 +29,6 @@ test:
 .PHONY: upload-pypi
 upload-pypi:
 	$(PYTHON) -m twine upload --verbose dist/*
+
+.PHONY: release
+release: clean build upload-pypi

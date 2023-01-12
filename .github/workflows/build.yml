@@ -1,0 +1,12 @@
+name: build
+run-name: Build and test randwords
+on:
+  pull_request:
+    - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: make test
+      - run: make build

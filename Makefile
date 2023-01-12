@@ -37,7 +37,7 @@ upload-pypi:
 	$(PYTHON) -m twine upload --verbose dist/*
 
 .PHONY: release
-release: clean build upload-pypi
+release: dev-setup test clean build upload-pypi
 
 .PHONY: ci
 ci: dev-setup test build

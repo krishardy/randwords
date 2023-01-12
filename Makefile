@@ -38,7 +38,7 @@ upload-pypi:
 
 .PHONY: upload-pypi-token
 upload-pypi-token:
-	$(PYTHON) -m twine upload --verbose --noninteractive dist/* -u "__token__" -p "${PYPI_TOKEN}"
+	$(PYTHON) -m twine upload --verbose --non-interactive dist/* -u "__token__" -p "${PYPI_TOKEN}"
 
 .PHONY: release
 release: dev-setup test clean build upload-pypi-token

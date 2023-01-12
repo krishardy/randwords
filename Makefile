@@ -32,3 +32,6 @@ upload-pypi:
 
 .PHONY: release
 release: clean build upload-pypi
+
+.PHONY: ci
+ci: dev-setup test build

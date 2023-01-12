@@ -3,6 +3,9 @@ run-name: Build and test randwords
 on:
   pull_request:
     - master
+  push:
+    branches:
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -16,16 +16,3 @@ Random word and string generators written in Python
 `python randwords -A 6` : Get 6 random words and remove non-ASCII characters
 
 `python randwords -a 6` : Get 6 random words and remove apostrophes
-
-## Development setup
-
-Travis CI CLI needs to be installed to manage .travis.yml
-
-https://github.com/travis-ci/travis.rb#installation
-
-Secrets are stored in .travis.yml via:
-
-```
-travis encrypt --add deploy.username <username>
-travis encrypt --add deploy.password <password>
-```

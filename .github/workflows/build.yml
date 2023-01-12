@@ -2,7 +2,8 @@ name: build
 run-name: Build and test randwords
 on:
   pull_request:
-    - master
+    branches:
+      - master
   push:
     branches:
       - master

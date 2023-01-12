@@ -1,6 +1,6 @@
-import pytest
+import math
 
-from randwords.entropy import *
+from randwords.entropy import calculate_corpus, calculate_chars
 
 def test_calculate_corpus():
     assert calculate_corpus(100, 5) == math.log2(100) * 5

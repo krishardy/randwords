@@ -1,7 +1,13 @@
 VENV=venv
-VENV_SCRIPTS=$(VENV)/Scripts
-PYTHON=$(VENV_SCRIPTS)/python
-PYTEST=$(VENV_SCRIPTS)/pytest
+
+ifeq ($(OS),Windows_NT)
+	VENV_BIN=$(VENV)/Scripts
+else
+	VENV_BIN=$(VENV)/bin
+endif
+
+PYTHON=$(VENV_BIN)/python
+PYTEST=$(VENV_BIN)/pytest
 
 .PHONY: build
 build:
